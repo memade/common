@@ -582,11 +582,12 @@ namespace sk {
 					HMENU hConsoleMenu = ::GetSystemMenu(hConsole, false);
 					::RemoveMenu(hConsoleMenu, SC_CLOSE, MF_BYCOMMAND);
 					::DestroyMenu(hConsoleMenu);
+					::SetWindowPos(hConsole, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
 
 					FILE* pFileConin{ nullptr }, * pFileConout{ nullptr }, * pFileConerr{ nullptr };
-					if (!::freopen_s(&pFileConin, "conin$", "w", stdin))
+					if (!::freopen_s(&pFileConin, "conin$", "r+t", stdin))
 						__this->m_FilePtrCacheQ.push(TypeToPtr(pFileConin), pFileConin);
-					if (!::freopen_s(&pFileConout, "conout$", "w", stdout))
+					if (!::freopen_s(&pFileConout, "conout$", "w+t", stdout))
 						__this->m_FilePtrCacheQ.push(TypeToPtr(pFileConout), pFileConout);
 
 					::SetConsoleTextAttribute(::GetStdHandle(STD_OUTPUT_HANDLE), FOREGROUND_RED | FOREGROUND_INTENSITY);
