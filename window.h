@@ -7,10 +7,14 @@
 #pragma comment(lib, "gdiplus.lib")
 #include <shellapi.h>
 
+#include "plugin.hpp"
+
 #define DEF_FIRST_CHILD_ID 0xC350
 #define WM_TASKBAR WM_USER+1001
 #define WM_DESTROY_CHILD WM_TASKBAR+1
 #define WM_TOOLBAR WM_TASKBAR+2
+#define WM_DEFMENUID_BEGIN WM_TASKBAR+1000
+#define WM_DEFMENUID_END	WM_TASKBAR+2000
 
 namespace sk {
 	class IWindowFrame;
@@ -169,6 +173,8 @@ namespace sk {
 			icex.dwSize = sizeof(INITCOMMONCONTROLSEX);
 			icex.dwICC = ICC_LISTVIEW_CLASSES | ICC_BAR_CLASSES | ICC_INTERNET_CLASSES | ICC_TAB_CLASSES;
 			InitCommonControlsEx(&icex);
+
+			m_PluginObj = new Plugin(sk::stringa(sk::Helper::GetCurrentProcessDirectoryA().get()) + "plugin");
 		}
 		~IWindowFrame()
 		{
@@ -191,6 +197,7 @@ namespace sk {
 					pFile = nullptr;
 					itclear = true;
 				});
+			SK_DELETE_PTR(m_PluginObj);
 		}
 	public:
 		inline int CreateFrame(const std::map<INT, LPARAM>& hotKeys)
@@ -449,6 +456,8 @@ namespace sk {
 		HMENU m_hPopMenuTaskBar = nullptr;
 
 		sk::container::map<long, IWindowChild*> m_ChildQ;
+
+		Plugin* m_PluginObj = nullptr;
 	private:
 		sk::container::map<INT/*HotKeyID*/, LPARAM/*vk | fsModifiers*/> m_HotKeyQ;
 		volatile long m_ChildID = 0;
@@ -557,6 +566,17 @@ namespace sk {
 			__this = reinterpret_cast<IWindowFrame*>(pCreateStruct->lpCreateParams);
 			__this->m_hWnd = hWnd;
 			__this->CreateStatusBar();
+
+			if (__this->m_PluginObj->Load(__this->m_hMenu, WM_DEFMENUID_BEGIN))
+			{
+			}
+		}break;
+		case WM_COMMAND:
+		{
+			if (wParam >= WM_DEFMENUID_BEGIN && wParam <= WM_DEFMENUID_END)
+			{
+				__this->m_PluginObj->OnMenu(wParam);
+			}
 		}break;
 		case WM_QUERYENDSESSION:
 			[[fallthrough]];
@@ -610,6 +630,8 @@ namespace sk {
 						::SendMessage(::GetParent(hWnd), WM_MDIDESTROY, (WPARAM)hWnd, 0);
 						return TRUE;
 					}, 0);
+
+				__this->m_PluginObj->UnLoad();
 			}
 
 		}break;
