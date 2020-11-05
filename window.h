@@ -530,7 +530,7 @@ namespace sk {
 		LRESULT result = 0;
 		if (__this)
 			result = __this->OnChildMessage(hWnd, message, wParam, lParam, bHandle);
-		return bHandle ? result : DefMDIChildProc(hWnd, message, wParam, lParam);
+		return /*bHandle ? result : */DefMDIChildProc(hWnd, message, wParam, lParam);
 	}
 
 	__inline LRESULT CALLBACK IWindowFrame::WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
