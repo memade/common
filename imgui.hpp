@@ -70,23 +70,15 @@
 #endif
 
 #ifdef DRIVER_GLUT_GL2
-#define IMGUI_IMPL_OPENGL_LOADER_GLAD2
-#include "imgui.h"
-#include "imgui_impl_glut.h"
-#include "imgui_impl_opengl2.h"
-#ifdef __APPLE__
-#include <GLUT/glut.h>
-#else
-#include <GL/freeglut.h>
-#endif
+#include "backends/imgui_impl_opengl2.h"
+#include "backends/imgui_impl_glut.h"
+#include "GL/freeglut.h"
 #endif
 
-#if 1
 #if !defined(_DEBUG)
 #pragma comment(lib,"imgui.lib")
 #else
 #pragma comment(lib,"imgui.lib")
-#endif
 #endif
 
 namespace sk {

@@ -88,7 +88,7 @@ namespace sk {
 			m_ChildType(ChildType),
 			IWindow(hInstance, hInstanceRes, AppName, ClassName)
 		{
-			m_WndClass.style = CS_HREDRAW | CS_VREDRAW;
+			m_WndClass.style = 0/*CS_HREDRAW | CS_VREDRAW*/;
 			m_WndClass.lpfnWndProc = WndProc;
 			m_WndClass.cbClsExtra = 0;
 			m_WndClass.cbWndExtra = sizeof(HANDLE);
