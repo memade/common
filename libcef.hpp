@@ -1,12 +1,16 @@
 ﻿#if !defined(AFX_SKSTU_1604538404_H__3B607_92885312_D6097FC4124CC50_21F3__HEAD__)
 #define AFX_SKSTU_1604538404_H__3B607_92885312_D6097FC4124CC50_21F3__HEAD__
 
+//#define CEF_USE_SANDBOX
+//#define CEF_USE_ATL
+
 #include "include/cef_app.h"
 #include "include/cef_client.h"
 #include "include/cef_parser.h"
 #include "include/cef_browser.h"
 #include "include/base/cef_bind.h"
 #include "include/cef_command_line.h"
+#include "include/cef_sandbox_win.h"
 #include "include/views/cef_browser_view.h"
 #include "include/views/cef_window.h"
 #include "include/wrapper/cef_helpers.h"

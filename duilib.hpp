@@ -1,6 +1,8 @@
 ﻿#if !defined(AFX_SKSTU_duilib_H__1EC09_74DB4F27_907BA6202460A68_570A__HEAD__)
 #define AFX_SKSTU_duilib_H__1EC09_74DB4F27_907BA6202460A68_570A__HEAD__
 
+#define UILIB_STATIC
+
 #if defined _M_IX86
 #if defined(_DEBUG)
 #pragma comment(lib,"../../../bin/lib/Win32/Debug/libdui.lib")
@@ -9,9 +11,9 @@
 #endif
 #elif defined _M_X64
 #if defined(_DEBUG)
-#pragma comment(lib,"../../../bin/lib/x64/Debug/libdui.lib")
+#pragma comment(lib,"libdui.lib")
 #else
-#pragma comment(lib,"../../../bin/lib/x64/Release/libdui.lib")
+#pragma comment(lib,"libdui.lib")
 #endif
 #else
 #endif
