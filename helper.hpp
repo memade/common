@@ -64,6 +64,16 @@ namespace sk {
 
 
 #pragma pack(push,1)
+
+	enum struct EnWindowsNotepadEncode : UINT
+	{
+		EN_WINDOWS_NOTEPAD_ENCODE_ANSI = 0,
+		EN_WINDOWS_NOTEPAD_ENCODE_UNICODE = 1,
+		EN_WINDOWS_NOTEPAD_ENCODE_UNICODEBIGENDIAN = 2,
+		EN_WINDOWS_NOTEPAD_ENCODE_UTF8 = 3,
+		EN_WINDOWS_NOTEPAD_ENCODE_UTF8BOM = 4,
+	};
+
 	typedef struct tagMachineHardwareInformation
 	{
 		LONG Head;
@@ -144,11 +154,20 @@ namespace sk {
 
 
 
+
 	class Helper final {
 	public:
 		Helper() {}
 		~Helper() = delete;
 	public:
+		static EnWindowsNotepadEncode WindowsNotepadEncode()
+		{
+			EnWindowsNotepadEncode result = EnWindowsNotepadEncode::EN_WINDOWS_NOTEPAD_ENCODE_ANSI;
+
+
+
+			return result;
+		}
 		static DWORD WriteConsoleInputQ()
 		{
 			HANDLE hConIn = GetStdHandle(STD_INPUT_HANDLE);
@@ -188,6 +207,15 @@ namespace sk {
 		static __int64 TickCountGet()
 		{
 			return std::chrono::duration_cast<T>(std::chrono::system_clock::now().time_since_epoch()).count();
+		}
+		//! 简洁获取ms
+		static time_t TimestampmsGet()
+		{
+			return TickCountGet<std::chrono::milliseconds>();
+		}
+		static time_t TimestampGet()
+		{
+			return TickCountGet<std::chrono::seconds>();
 		}
 		template<typename T>
 		static __int64 LocalTimestampGet()

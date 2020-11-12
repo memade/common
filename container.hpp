@@ -1307,6 +1307,29 @@ namespace sk {
 			unordered_multimap() {}
 			virtual ~unordered_multimap() {}
 		public:
+			bool end(const std::function<void(const KEY&, const VAL&)>& end_cb) const
+			{
+				bool result = false;
+				std::lock_guard<std::mutex> lock(*m_mutex);
+				if (!m_unordered_multimap.empty())
+				{
+					auto itend = std::prev(m_unordered_multimap.end());
+					end_cb(itend->first, itend->second);
+					result = true;
+				}
+				return result;
+			}
+			bool begin(const std::function<void(const KEY&, const VAL&)>& begin_cb) const
+			{
+				bool result = false;
+				std::lock_guard<std::mutex> lock(*m_mutex);
+				if (!m_unordered_multimap.empty())
+				{
+					begin_cb(m_unordered_multimap.begin()->first, m_unordered_multimap.begin()->second);
+					result = true;
+				}
+				return result;
+			}
 			void push(const KEY& _key, const VAL& _info) {
 				std::lock_guard<std::mutex> _lock(*m_mutex);
 				m_unordered_multimap.insert(std::make_pair(_key, _info));
@@ -1379,6 +1402,12 @@ namespace sk {
 				m_unordered_multimap.clear();
 			}
 			void iterate(const std::function<void(const KEY&, VAL&)>& _callback) {
+				std::lock_guard<std::mutex> _lock(*m_mutex);
+				for (auto it = m_unordered_multimap.begin(); it != m_unordered_multimap.end(); ++it) {
+					_callback(it->first, it->second);
+				}
+			}
+			void iterate(const std::function<void(const KEY&, const VAL&)>& _callback) const {
 				std::lock_guard<std::mutex> _lock(*m_mutex);
 				for (auto it = m_unordered_multimap.begin(); it != m_unordered_multimap.end(); ++it) {
 					_callback(it->first, it->second);
