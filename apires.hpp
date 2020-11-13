@@ -173,6 +173,7 @@ XX(0x101000,OBJ_SHAREDFIX_ERROR,"common error.")\
 XX(0x101001,OBJ_SHAREDFIX_ERROR_CFG_PATH,"obj config file path error.")\
 XX(0x101002,OBJ_SHAREDFIX_ERROR_CFG_LOAD,"obj config file load error.")\
 XX(0x101003,OBJ_SHAREDFIX_ERROR_NULLPTR,"nullptr.")\
+XX(0x101004,OBJ_SHAREDFIX_ERROR_SESSIONSETTING_EMPTY,"fix session setting is empty.")\
 
 //Rejected
 #define SK_ERRNO_GEN(code, type, desc) type = code,
